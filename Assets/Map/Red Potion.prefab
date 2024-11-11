@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6295835115386505677}
   - component: {fileID: 7557005100391667529}
+  - component: {fileID: 5490224786055192937}
   m_Layer: 0
   m_Name: Red Potion
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,3 +85,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5490224786055192937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8888510176304427569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66016a7a304da7440a6c304a005e4d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  positionX: 0
+  positionY: 0
+  mapGenerator: {fileID: 0}
+  healPoint: 10
+  isBonues: 0

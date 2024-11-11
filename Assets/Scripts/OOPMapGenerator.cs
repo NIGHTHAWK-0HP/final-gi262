@@ -28,8 +28,8 @@ namespace Student
         [Header("Set Transform")]
         public Transform floorParent;
         public Transform wallParent;
-        public Transform itemPotionParent;
         public Transform tileParent;
+        public Transform itemPotionParent;
 
         [Header("Set object Count")]
         public int obsatcleCount;
@@ -44,6 +44,7 @@ namespace Student
         public int empty = 0;
         public int tile = 1;
         public int potion = 2;
+        public int exit = 4;
 
         // Start is called before the first frame update
         void Start()
@@ -95,6 +96,9 @@ namespace Student
                     count++;
                 }
             }
+
+            mapdata[X - 1, Y - 1] = exit;
+            Exit.transform.position = new Vector3(X - 1, Y - 1, 0);
         }
 
         public int GetMapData(float x, float y)
@@ -126,7 +130,7 @@ namespace Student
             walls[x, y].positionX = x;
             walls[x, y].positionY = y;
             walls[x, y].mapGenerator = this;
-            obj.name = $"Box_{walls[x, y].Name} {x}, {y}";
+            obj.name = $"Tile_{walls[x, y].Name} {x}, {y}";
         }
     }
 }
