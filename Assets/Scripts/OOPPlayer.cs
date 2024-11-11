@@ -1,26 +1,30 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Student
 {
     public class OOPPlayer : MonoBehaviour
     {
         public float speed = 5;
-        private Animator animator;
-        public int health = 100;  // Player's health
         public int maxHealth = 100;  // Max health of the player
+        private int currentHealth;    // Current health of the player
+
+        private Animator animator;
+        private Rigidbody2D rb;
 
         private void Start()
         {
+            // Cache components for efficiency
             animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody2D>();
+            currentHealth = maxHealth;  // Initialize current health
+
+            // Error checking for missing components
             if (animator == null)
             {
                 Debug.LogError("Animator component missing on player.");
             }
-
-            if (GetComponent<Rigidbody2D>() == null)
+            if (rb == null)
             {
                 Debug.LogError("Rigidbody2D component missing on player.");
             }
@@ -28,22 +32,55 @@ namespace Student
 
         private void Update()
         {
+            HandleMovement();
+        }
+
+        private void HandleMovement()
+        {
+            // Movement input
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveY = Input.GetAxisRaw("Vertical");
 
-            Vector2 dir = new Vector2(moveX, moveY).normalized;
+            // Normalize the direction vector to maintain consistent speed
+            Vector2 direction = new Vector2(moveX, moveY).normalized;
 
-            // Set animation direction
+            // Update animation based on movement direction
+            UpdateAnimator(moveX, moveY, direction);
+
+            // Apply movement velocity
+            rb.velocity = speed * direction;
+        }
+
+        private void UpdateAnimator(float moveX, float moveY, Vector2 direction)
+        {
+            // Set animation based on movement direction
             if (moveX < 0) animator.SetInteger("Direction", 3);  // Left
             else if (moveX > 0) animator.SetInteger("Direction", 2); // Right
             else if (moveY > 0) animator.SetInteger("Direction", 1); // Up
             else if (moveY < 0) animator.SetInteger("Direction", 0); // Down
 
-            animator.SetBool("IsMoving", dir.magnitude > 0);
-
-            // Apply velocity based on the direction
-            GetComponent<Rigidbody2D>().velocity = speed * dir;
+            animator.SetBool("IsMoving", direction.magnitude > 0);
         }
+        public class PlayerHealth : MonoBehaviour
+{
+    public int health = 100;
+
+    // Method to take damage
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player has died.");
+        // Additional logic for player death (e.g., restarting the game, playing animations, etc.)
+    }
+}
 
         // Method to heal the player
         public void Heal(int healAmount, bool isBonus = false)
@@ -53,38 +90,33 @@ namespace Student
                 healAmount *= 2;  // Double the healing amount for bonus potions
             }
 
-            health += healAmount;
+            // Increase health and clamp it to maxHealth
+            currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
 
-            // Ensure health doesn't exceed maxHealth
-            if (health > maxHealth)
-            {
-                health = maxHealth;
-            }
-
-            // Log the healing to console
-            Debug.Log("Player healed by " + healAmount + ". Current health: " + health);
+            Debug.Log("Player healed by " + healAmount + ". Current health: " + currentHealth);
         }
 
         // Method for taking damage
-        public void TakeDamage(int damageAmount)
+        public void TakeDamage(int damage)
         {
-            health -= damageAmount;
-            if (health <= 0)
+            currentHealth -= damage;   // Subtract the damage from current health
+            Debug.Log("Player Health: " + currentHealth);
+
+            // Check if the player is dead
+            if (currentHealth <= 0)
             {
-                health = 0;
                 Die();
             }
-            Debug.Log("Player damaged by " + damageAmount + ". Current health: " + health);
         }
 
-        // Handle player death
         private void Die()
         {
-            // Trigger death animation or other effects
-            animator.SetTrigger("Die");  // Assuming you have a "Die" trigger in your Animator
-
-            // Optionally: Disable player controls, show game over screen, etc.
-            this.enabled = false;  // Disable player control after death
+            // Handle player death (e.g., play animation, restart level)
+            Debug.Log("Player is dead!");
+            Destroy(gameObject);
+            // Additional actions such as restarting the game or respawning can go here
+            // For example: Disable input, show a death screen, etc.
         }
     }
 }
+
