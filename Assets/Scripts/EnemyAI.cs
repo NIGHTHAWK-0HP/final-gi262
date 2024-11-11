@@ -16,13 +16,27 @@ namespace Student
 
         private void Start()
         {
-            // Get the PlayerHealth component on the player GameObject
+            // If player is not manually assigned in the Inspector, find it by tag
+            if (player == null)
+            {
+                GameObject playerObj = GameObject.FindWithTag("Player");
+                if (playerObj != null)
+                {
+                    player = playerObj.transform;
+                }
+                else
+                {
+                    Debug.LogError("Player GameObject with 'Player' tag not found.");
+                }
+            }
+
+            // Now safely try to get the player's health component
             if (player != null)
             {
                 CharacterHealth = player.GetComponent<Character>();
                 if (CharacterHealth == null)
                 {
-                    Debug.LogError("PlayerHealth component is missing on the player object.");
+                    Debug.LogError("CharacterHealth component is missing on the player object.");
                 }
             }
             else
@@ -30,12 +44,13 @@ namespace Student
                 Debug.LogError("Player Transform is not assigned.");
             }
 
-            rb = GetComponent<Rigidbody2D>(); // Optionally, for physics-based movement
+            rb = GetComponent<Rigidbody2D>();
             if (rb == null)
             {
                 Debug.LogError("Rigidbody2D component missing from Enemy object.");
             }
         }
+
 
         private void Update()
         {
