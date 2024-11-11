@@ -102,7 +102,7 @@ MonoBehaviour:
   positionX: 0
   positionY: 0
   mapGenerator: {fileID: 0}
-  healPoint: 10
+  healPoint: 50
   isBonus: 0
 --- !u!61 &3952082279667660412
 BoxCollider2D:

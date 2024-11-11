@@ -5,14 +5,14 @@ namespace Student
 {
     public class EnemyAI : MonoBehaviour
     {
-        public Transform player; // Reference to the player's transform
+        public Transform player; // Reference to the player
         public float moveSpeed = 2f; // Enemy movement speed
-        public float attackRange = 1.5f; // Range within which the enemy attacks the player
-        public float attackCooldown = 1f; // Cooldown time between attacks
+        public float attackRange = 1.5f; // Range attacks player
+        public float attackCooldown = 1f; // Cooldown attacks
         public int attackDamage = 10; // Damage dealt to the player per attack
-        private bool canAttack = true; // Control when the enemy can attack
+        private bool canAttack = true; // enemy attack
         private Character CharacterHealth; // Reference to the player's health
-        private Rigidbody2D rb; // Rigidbody2D for movement
+        private Rigidbody2D rb;
 
         private void Start()
         {
