@@ -8,32 +8,45 @@ namespace Student
     public class OOPPlayer : Character
     {
         public Inventory inventory;
-
-        public void Start()
+        public float speed;
+        private Animator animator;
+        
+        private void Start()
         {
+            animator = GetComponent<Animator>();
             PrintInfo();
             GetRemainEnergy();
         }
 
-        public void Update()
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+
+            Vector2 dir = new Vector2(horizontal, vertical).normalized;
+    
+            if (dir.magnitude > 0)
             {
-                Move(Vector2.up);
+                animator.SetBool("IsMoving", true);
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            else
             {
-                Move(Vector2.down);
+                animator.SetBool("IsMoving", false);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+
+            // Setting Direction based on input
+            if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
             {
-                Move(Vector2.left);
+                animator.SetInteger("Direction", horizontal > 0 ? 2 : 3); // Right = 2, Left = 3
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            else
             {
-                Move(Vector2.right);
+                animator.SetInteger("Direction", vertical > 0 ? 1 : 0); // Up = 1, Down = 0
             }
+
+            GetComponent<Rigidbody2D>().velocity = speed * dir;
         }
+
 
         public void Attack(OOPEnemy _enemy)
         {

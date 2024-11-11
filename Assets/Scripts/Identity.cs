@@ -2,26 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Student
+// Identity class เป็น base class (คลาสแม่) ของทุก object ที่ถูกสร้างขึ้นในเกม
+public class Identity : MonoBehaviour
 {
+    public string Name;
+    public int positionX;
+    public int positionY;
+    public OOPMapGenerator mapGenerator;
 
-    public class Identity : MonoBehaviour
+    public virtual void Hit()
     {
-        [Header("Identity")]
-        public string Name;
-        public int positionX;
-        public int positionY;
-
-        public OOPMapGenerator mapGenerator;
-
-        public void PrintInfo()
-        {
-            Debug.Log("tell me your " + Name);
-        }
-
-        public virtual void Hit()
-        {
-
-        }
+        Debug.Log("hit!");
     }
 }
