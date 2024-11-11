@@ -96,7 +96,6 @@ namespace Student
                     count++;
                 }
             }
-
             mapdata[X - 1, Y - 1] = exit;
             Exit.transform.position = new Vector3(X - 1, Y - 1, 0);
         }
@@ -122,11 +121,43 @@ namespace Student
 
         public void PlaceTile(int x, int y)
         {
+            if (tilePrefab == null || tilePrefab.Length == 0)
+            {
+                Debug.LogError("tilePrefab array is not assigned or is empty!");
+                return;
+            }
+
             int r = Random.Range(0, tilePrefab.Length);
+            if (tilePrefab[r] == null)
+            {
+                Debug.LogError($"tilePrefab[{r}] is null!");
+                return;
+            }
+
+            // Instantiate the tile prefab
             GameObject obj = Instantiate(tilePrefab[r], new Vector3(x, y, 0), Quaternion.identity);
             obj.transform.parent = tileParent;
-            mapdata[x, y] = tile;
-            walls[x, y] = obj.GetComponent<OOPWall>();
+
+            // Log which prefab is being used
+            Debug.Log($"Placing tile at ({x}, {y}) using prefab: {tilePrefab[r].name}");
+
+            // Check if the prefab is supposed to have the OOPWall component
+            OOPWall wallComponent = obj.GetComponent<OOPWall>();
+
+            if (wallComponent == null)
+            {
+                // Log a warning if the prefab doesn't have the OOPWall component
+                Debug.LogWarning($"OOPWall component missing on prefab: {tilePrefab[r].name}. Skipping tile placement at ({x}, {y}).");
+
+                // Optionally, you could destroy the object if it's not valid
+                Destroy(obj);  // Destroy the instantiated object since it's not valid for placement
+                return;
+            }
+
+            // If the component is found, assign it to the walls array
+            walls[x, y] = wallComponent;
+
+            // Initialize wall properties
             walls[x, y].positionX = x;
             walls[x, y].positionY = y;
             walls[x, y].mapGenerator = this;
