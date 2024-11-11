@@ -10,6 +10,28 @@ namespace Student
     {
         public float speed;
         private Animator animator;
+        public int health = 100;  // Player's health
+        public int maxHealth = 100;  // Max health of the player
+
+        // Method to heal the player
+        public void Heal(int healAmount, bool isBonus = false)
+        {
+            if (isBonus)
+            {
+                healAmount *= 2;  // Double the healing amount for bonus potions
+            }
+
+            health += healAmount;
+
+            // Ensure health doesn't exceed maxHealth
+            if (health > maxHealth)
+            {
+                health = maxHealth;
+            }
+
+            // Log the healing to console
+            Debug.Log("Player healed by " + healAmount + ". Current health: " + health);
+        }
 
         private void Start()
         {
@@ -46,7 +68,5 @@ namespace Student
 
             GetComponent<Rigidbody2D>().velocity = speed * dir;
         }
-
     }
-
 }
