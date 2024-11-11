@@ -5,62 +5,46 @@ using UnityEngine.UIElements;
 
 namespace Student
 {
-    public class OOPPlayer : Character
+    public class OOPPlayer : MonoBehaviour
+
     {
-        public Inventory inventory;
         public float speed;
         private Animator animator;
-        
+
         private void Start()
         {
             animator = GetComponent<Animator>();
-            PrintInfo();
-            GetRemainEnergy();
         }
 
         private void Update()
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-
-            Vector2 dir = new Vector2(horizontal, vertical).normalized;
-    
-            if (dir.magnitude > 0)
+            Vector2 dir = Vector2.zero;
+            if (Input.GetKey(KeyCode.A))
             {
-                animator.SetBool("IsMoving", true);
+                dir.x = -1;
+                animator.SetInteger("Direction", 3);
             }
-            else
+            else if (Input.GetKey(KeyCode.D))
             {
-                animator.SetBool("IsMoving", false);
+                dir.x = 1;
+                animator.SetInteger("Direction", 2);
             }
 
-            // Setting Direction based on input
-            if (Mathf.Abs(horizontal) > Mathf.Abs(vertical))
+            if (Input.GetKey(KeyCode.W))
             {
-                animator.SetInteger("Direction", horizontal > 0 ? 2 : 3); // Right = 2, Left = 3
+                dir.y = 1;
+                animator.SetInteger("Direction", 1);
             }
-            else
+            else if (Input.GetKey(KeyCode.S))
             {
-                animator.SetInteger("Direction", vertical > 0 ? 1 : 0); // Up = 1, Down = 0
+                dir.y = -1;
+                animator.SetInteger("Direction", 0);
             }
+
+            dir.Normalize();
+            animator.SetBool("IsMoving", dir.magnitude > 0);
 
             GetComponent<Rigidbody2D>().velocity = speed * dir;
-        }
-
-
-        public void Attack(OOPEnemy _enemy)
-        {
-            _enemy.energy -= AttackPoint;
-            Debug.Log(_enemy.name + " is energy " + _enemy.energy);
-        }
-
-        protected override void CheckDead()
-        {
-            base.CheckDead();
-            if (energy <= 0)
-            {
-                Debug.Log("Player is Dead");
-            }
         }
 
     }

@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-// OOPWall aka "Demon Wall"
-public class OOPWall : Identity
+namespace Student
 {
-    public void Hit()
+
+    public class OOPWall : Identity
     {
-        Debug.Log("wall hit!");
-        mapGenerator.mapdata[positionX, positionY] = mapGenerator.empty;
-        Destroy(gameObject);
-        mapGenerator.player.TakeDamage(10);
+        public int Damage;
+        public bool IsIceWall;
+
+        private void Start()
+        {
+            IsIceWall = Random.Range(0, 100) < 20 ? true : false;
+            if (IsIceWall)
+            {
+                GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
     }
 }
