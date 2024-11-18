@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyAI : Character
 {
     public float moveSpeed = 3f;  // ความเร็วในการเคลื่อนที่ของศัตรู
-    public GameObject player;     // เปลี่ยนเป็น GameObject แทน Transform
+    public GameObject player;     // เปลี่ยนจาก Transform เป็น GameObject
     public float rotationSpeed = 5f;  // ความเร็วในการหมุนของศัตรู
     public float attackRange = 1.5f;  // ระยะในการโจมตี
     public int attackDamage = 20;    // ความเสียหายในการโจมตี
@@ -21,24 +21,20 @@ public class EnemyAI : Character
 
     private void Update()
     {
-        // ตรวจสอบระยะห่างจากผู้เล่น
-        if (player != null)
+        // ตรวจสอบว่า player มี tag "Player" และตามผู้เล่น
+        if (player != null && player.CompareTag("Player"))
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
             if (distanceToPlayer > attackRange)
             {
-                FollowPlayer();
+                FollowPlayer();  // ตามผู้เล่น
             }
             else
             {
-                StopMoving();
+                StopMoving();  // หยุดการเคลื่อนที่เมื่ออยู่ในระยะโจมตี
 
-                // ตรวจสอบว่า GameObject player มี tag "Player"
-                if (player.CompareTag("Player"))
-                {
-                    AttackPlayer();
-                }
+                AttackPlayer();  // โจมตีผู้เล่น
             }
         }
     }
@@ -84,4 +80,3 @@ public class EnemyAI : Character
         }
     }
 }
-
