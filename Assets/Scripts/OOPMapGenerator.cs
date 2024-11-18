@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 
 namespace Student
 {
-
     public class OOPMapGenerator : MonoBehaviour
     {
         [Header("Set MapGenerator")]
@@ -33,6 +31,8 @@ namespace Student
 
         [Header("Set object Count")]
         public int obsatcleCount;
+        public float itemDensity = 0.05f; // Percentage of grid to be filled with items (5% by default)
+
         public int itemPotionCount;
 
         public int[,] mapdata;
@@ -50,6 +50,8 @@ namespace Student
         void Start()
         {
             mapdata = new int[X, Y];
+
+            // Generate walls and floors
             for (int x = -1; x < X + 1; x++)
             {
                 for (int y = -1; y < Y + 1; y++)
@@ -84,18 +86,24 @@ namespace Student
                 }
             }
 
+            // Calculate item count based on map size and density ratio
+            itemPotionCount = Mathf.RoundToInt(X * Y * itemDensity);
+
             potions = new OOPItemPotion[X, Y];
             count = 0;
             while (count < itemPotionCount)
             {
                 int x = Random.Range(0, X);
                 int y = Random.Range(0, Y);
+                // Ensure the tile is empty and not already occupied by an obstacle or item
                 if (mapdata[x, y] == empty)
                 {
                     PlaceItem(x, y);
                     count++;
                 }
             }
+
+            // Place the exit
             mapdata[X - 1, Y - 1] = exit;
             Exit.transform.position = new Vector3(X - 1, Y - 1, 0);
         }
@@ -108,6 +116,13 @@ namespace Student
 
         public void PlaceItem(int x, int y)
         {
+            // Ensure the spot is empty before placing the item
+            if (mapdata[x, y] != empty)
+            {
+                Debug.LogWarning($"Cannot place item at ({x}, {y}) because the tile is already occupied.");
+                return;
+            }
+
             int r = Random.Range(0, itemsPrefab.Length);
             GameObject obj = Instantiate(itemsPrefab[r], new Vector3(x, y, 0), Quaternion.identity);
             obj.transform.parent = itemPotionParent;
@@ -121,6 +136,13 @@ namespace Student
 
         public void PlaceTile(int x, int y)
         {
+            // Ensure the spot is empty before placing the tile (obstacle)
+            if (mapdata[x, y] != empty)
+            {
+                Debug.LogWarning($"Cannot place tile at ({x}, {y}) because the tile is already occupied.");
+                return;
+            }
+
             if (tilePrefab == null || tilePrefab.Length == 0)
             {
                 Debug.LogError("tilePrefab array is not assigned or is empty!");
@@ -134,7 +156,7 @@ namespace Student
                 return;
             }
 
-            // Instantiate the tile prefab
+            // Instantiate the tile prefab (obstacle)
             GameObject obj = Instantiate(tilePrefab[r], new Vector3(x, y, 0), Quaternion.identity);
             obj.transform.parent = tileParent;
 
@@ -162,6 +184,9 @@ namespace Student
             walls[x, y].positionY = y;
             walls[x, y].mapGenerator = this;
             obj.name = $"Tile_{walls[x, y].Name} {x}, {y}";
+
+            // Mark the spot as occupied by an obstacle
+            mapdata[x, y] = tile;
         }
     }
 }
