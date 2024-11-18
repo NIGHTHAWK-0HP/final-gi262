@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
     public int health = 100;
+    public int maxHealth = 100;
 
-    // Method to take damage
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         health -= damage;
         if (health <= 0)
@@ -16,9 +14,17 @@ public class Character : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Heal(int amount)
     {
-        Debug.Log("Player has died.");
-        // Additional logic for player death (e.g., restarting the game, playing animations, etc.)
+        health += amount;
+        if (health > maxHealth)
+        {
+            health = maxHealth; // Ensure health doesn't exceed maxHealth
+        }
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
     }
 }

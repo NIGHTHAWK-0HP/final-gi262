@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Student
@@ -13,7 +11,7 @@ namespace Student
         {
             // 20% chance to be a bonus potion
             isBonus = Random.Range(0, 100) < 20;
-            
+
             // Visual feedback for bonus potions
             if (isBonus)
             {
@@ -29,22 +27,25 @@ namespace Student
                 return;
             }
 
+            // If it's a bonus potion, double the healing amount
             if (isBonus)
             {
-                mapGenerator.player.Heal(healPoint, isBonus);
+                mapGenerator.player.Heal(healPoint * 2);  // Pass only one argument (healing amount)
                 Debug.Log("You got " + Name + " Bonus: " + healPoint * 2);
             }
             else
             {
-                mapGenerator.player.Heal(healPoint);
+                mapGenerator.player.Heal(healPoint);  // Regular healing
                 Debug.Log("You got " + Name + ": " + healPoint);
             }
 
-            // Set mapdata to 0 to remove the potion
+            // Set mapdata to 0 to remove the potion from the map
             if (positionX >= 0 && positionX < mapGenerator.X && positionY >= 0 && positionY < mapGenerator.Y)
             {
                 mapGenerator.mapdata[positionX, positionY] = 0;
             }
+
+            // Destroy the potion object
             Destroy(gameObject);
         }
 
