@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1435032677116990840}
   m_Layer: 20
   m_Name: Props Statue
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,11 +181,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  moveSpeed: 2
+  moveSpeed: 1
   player: {fileID: 0}
   rotationSpeed: 5
   attackRange: 1.5
-  attackDamage: 30
+  attackDamage: 20
 --- !u!1 &8867989618235733810
 GameObject:
   m_ObjectHideFlags: 0

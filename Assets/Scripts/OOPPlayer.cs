@@ -1,100 +1,70 @@
-using System.Collections;
 using UnityEngine;
 
-namespace Student
+public class OOPPlayer : Character
 {
-    public class OOPPlayer : Character
+    public int maxHealth = 100;  // Player's max health
+    private int currentHealth;
+
+    public float moveSpeed = 5f;  // Movement speed of the player
+    private Rigidbody2D rb;  // Reference to the player's Rigidbody2D component
+    private Vector2 moveDirection;  // Direction the player is moving in
+
+    private void Start()
     {
-        public float speed = 5;
-        public int maxHealth = 100;  // Max health of the player
-        private int currentHealth;    // Current health of the player
-
-        private Animator animator;
-        private Rigidbody2D rb;
-
-        private void Start()
+        currentHealth = maxHealth;  // Initialize health
+        rb = GetComponent<Rigidbody2D>();  // Get the Rigidbody2D component
+        if (rb == null)
         {
-            // Cache components for efficiency
-            animator = GetComponent<Animator>();
-            rb = GetComponent<Rigidbody2D>();
-            currentHealth = maxHealth;  // Initialize current health
-
-            // Error checking for missing components
-            if (animator == null)
-            {
-                Debug.LogError("Animator component missing on player.");
-            }
-            if (rb == null)
-            {
-                Debug.LogError("Rigidbody2D component missing on player.");
-            }
-        }
-
-        private void Update()
-        {
-            HandleMovement();
-        }
-
-        private void HandleMovement()
-        {
-            // Movement input
-            float moveX = Input.GetAxisRaw("Horizontal");
-            float moveY = Input.GetAxisRaw("Vertical");
-
-            // Normalize the direction vector to maintain consistent speed
-            Vector2 direction = new Vector2(moveX, moveY).normalized;
-
-            // Update animation based on movement direction
-            UpdateAnimator(moveX, moveY, direction);
-
-            // Apply movement velocity
-            rb.velocity = speed * direction;
-        }
-
-        private void UpdateAnimator(float moveX, float moveY, Vector2 direction)
-        {
-            // Set animation based on movement direction
-            if (moveX < 0) animator.SetInteger("Direction", 3);  // Left
-            else if (moveX > 0) animator.SetInteger("Direction", 2); // Right
-            else if (moveY > 0) animator.SetInteger("Direction", 1); // Up
-            else if (moveY < 0) animator.SetInteger("Direction", 0); // Down
-
-            animator.SetBool("IsMoving", direction.magnitude > 0);
-        }
-        public class PlayerHealth : MonoBehaviour
-{
-    public int health = 100;
-
-    // Method to take damage
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            Die();
+            Debug.LogError("Rigidbody2D component missing on player.");
         }
     }
 
-    private void Die()
+    private void Update()
+    {
+        HandleMovement();  // Handle player movement
+    }
+
+    private void HandleMovement()
+    {
+        // Get input for horizontal and vertical movement (WSAD or Arrow keys)
+        float moveX = Input.GetAxisRaw("Horizontal");  // -1 for left, 1 for right
+        float moveY = Input.GetAxisRaw("Vertical");  // -1 for down, 1 for up
+
+        // Store the movement direction in a Vector2
+        moveDirection = new Vector2(moveX, moveY).normalized;
+
+        // Apply movement to the player's Rigidbody2D (without using Physics)
+        rb.velocity = moveDirection * moveSpeed;
+    }
+
+    public void Heal(int healingAmount)
+    {
+        currentHealth += healingAmount;
+
+        // Ensure health doesn't exceed max health
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        Debug.Log("Player healed by " + healingAmount + ". Current health: " + currentHealth);
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);  // Call the base method to reduce health
+
+        if (currentHealth <= 0)
+        {
+            Die();  // Call the overridden Die method when health reaches 0
+        }
+    }
+
+    // Override the Die method
+    public override void Die()
     {
         Debug.Log("Player has died.");
-        // Additional logic for player death (e.g., restarting the game, playing animations, etc.)
+        // You can add custom logic here (e.g., respawn, game over)
+        Destroy(gameObject);  // Default action: destroy the player object
     }
 }
-
-        // Method to heal the player
-        public void Heal(int healAmount, bool isBonus = false)
-        {
-            if (isBonus)
-            {
-                healAmount *= 2;  // Double the healing amount for bonus potions
-            }
-
-            // Increase health and clamp it to maxHealth
-            currentHealth = Mathf.Min(currentHealth + healAmount, maxHealth);
-
-            Debug.Log("Player healed by " + healAmount + ". Current health: " + currentHealth);
-        }
-    }
-}
-
