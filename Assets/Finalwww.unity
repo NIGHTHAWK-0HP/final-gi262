@@ -694,9 +694,10 @@ MonoBehaviour:
   enemyPrefab: {fileID: 1981919602033663839, guid: 1ff9df9311c51df4386967e985b592de,
     type: 3}
   spawnPoint: {fileID: 353032245}
-  timeBetweenWaves: 5
-  enemiesPerWave: 2
-  spawnDelay: 5
+  timeBetweenWaves: 10
+  enemiesPerWave: 5
+  spawnDelay: 0.5
+  spawnRadius: 2
 --- !u!4 &1591546657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3653988829796000160, guid: 46fea639b23025b4384d62699757b6da,
