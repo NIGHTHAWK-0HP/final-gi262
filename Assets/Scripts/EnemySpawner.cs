@@ -8,9 +8,13 @@ public class EnemySpawner : MonoBehaviour
     public float timeBetweenWaves = 20f;
     public int enemiesPerWave = 5;
     public float spawnDelay = 0.1f;
-    public float spawnRadius = 2f;  // ระยะที่ใช้ในการตรวจสอบการซ้อนทับ
+    public float spawnRadius = 2f;
+
+    public int baseDamage = 10;         // ค่าความเสียหายเริ่มต้น
+    public int damageIncrement = 10;   // จำนวนที่เพิ่มขึ้นในแต่ละระลอก
 
     private bool isSpawning = false;
+    private int currentWave = 0;       // ระบุระลอกปัจจุบัน
 
     void Start()
     {
@@ -24,7 +28,8 @@ public class EnemySpawner : MonoBehaviour
             if (!isSpawning)
             {
                 isSpawning = true;
-                Debug.Log("Wave Started!");
+                currentWave++;
+                Debug.Log($"Wave {currentWave} Started! Damage: {baseDamage}");
 
                 for (int i = 0; i < enemiesPerWave; i++)
                 {
@@ -33,8 +38,12 @@ public class EnemySpawner : MonoBehaviour
                     yield return new WaitForSeconds(spawnDelay);
                 }
 
-                Debug.Log("Wave Finished!");
+                Debug.Log($"Wave {currentWave} Finished!");
                 isSpawning = false;
+
+                // เพิ่มความเสียหายสำหรับระลอกถัดไป
+                baseDamage += damageIncrement;
+
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
@@ -45,10 +54,8 @@ public class EnemySpawner : MonoBehaviour
         Vector3 spawnPosition = spawnPoint.position;
         int attempts = 0;
 
-        // ตรวจสอบตำแหน่งหลายครั้งเพื่อป้องกันการซ้อนทับ
         while (Physics2D.OverlapCircle(spawnPosition, spawnRadius) != null && attempts < 5)
         {
-            // เปลี่ยนตำแหน่งแบบสุ่มภายในระยะที่กำหนด
             spawnPosition = spawnPoint.position + (Vector3)Random.insideUnitCircle * spawnRadius;
             attempts++;
         }
@@ -58,6 +65,13 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy(Vector3 spawnPosition)
     {
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+        // ส่งค่าความเสียหายให้กับ EnemyAI
+        EnemyAI enemyScript = enemy.GetComponent<EnemyAI>();
+        if (enemyScript != null)
+        {
+            enemyScript.SetDamage(baseDamage);
+        }
     }
 }

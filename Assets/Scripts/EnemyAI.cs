@@ -6,8 +6,8 @@ public class EnemyAI : Character
     public GameObject player;    
     public float rotationSpeed = 5f; 
     public float attackRange = 1.5f; 
-    public int attackDamage = 20;   
-    public float attackCooldown = 1f;  // Time between attacks
+    public int attackDamage = 10;   
+    public float attackCooldown = 1f; 
 
     private Rigidbody2D rb;
     private Character playerCharacterScript;
@@ -30,7 +30,7 @@ public class EnemyAI : Character
             }
             else
             {
-                playerCharacterScript = player.GetComponent<Character>();  // Cache the player's Character script
+                playerCharacterScript = player.GetComponent<Character>();
                 if (playerCharacterScript == null)
                 {
                     Debug.LogError("Character script not found on player.");
@@ -53,7 +53,7 @@ public class EnemyAI : Character
             {
                 StopMoving();
 
-                if (player.CompareTag("Player") && Time.time > lastAttackTime + attackCooldown)
+                if (Time.time > lastAttackTime + attackCooldown)
                 {
                     AttackPlayer();
                 }
@@ -81,13 +81,19 @@ public class EnemyAI : Character
     {
         if (player != null && Vector2.Distance(transform.position, player.transform.position) <= attackRange)
         {
-            if (player.CompareTag("Player") && playerCharacterScript != null)
+            if (playerCharacterScript != null)
             {
                 playerCharacterScript.TakeDamage(attackDamage);
-                lastAttackTime = Time.time; // Reset attack cooldown timer
+                lastAttackTime = Time.time;
                 Debug.Log("Enemy attacks the player for " + attackDamage + " damage.");
             }
         }
+    }
+
+    public void SetDamage(int newDamage)
+    {
+        attackDamage = newDamage;
+        Debug.Log("Enemy damage set to: " + attackDamage);
     }
 }
 
