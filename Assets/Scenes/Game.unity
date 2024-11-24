@@ -472,6 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 428959142}
   lerpSpeed: 2
+  useDynamicOffset: 0
 --- !u!114 &519420036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,8 +660,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ea12672d43a5547bca6d7ccbe75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  X: 10
-  Y: 10
+  X: 15
+  Y: 15
   player: {fileID: 428959137}
   playerStartPos: {x: 0, y: 0}
   Exit: {fileID: 0}
