@@ -54,7 +54,6 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Debug.Log("All waves finished!"); // เมื่อเสร็จสิ้นทุกระลอก
-        Debug.Log("You Win!");
     }
 
     Vector3 GetValidSpawnPosition()
