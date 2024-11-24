@@ -184,12 +184,13 @@ MonoBehaviour:
   health: 100
   moveSpeed: 1
   player: {fileID: 0}
-  rotationSpeed: 5
   attackRange: 1.5
   attackDamage: 10
   attackCooldown: 1
-  interceptTime: 1
-  raycastDistance: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  obstacleAvoidanceRadius: 1
 --- !u!1 &8867989618235733810
 GameObject:
   m_ObjectHideFlags: 0

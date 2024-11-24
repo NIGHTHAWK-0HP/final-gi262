@@ -11,6 +11,9 @@ public class EnemyAI : Character
     private Rigidbody2D rb;
     private Character playerCharacterScript;
     private float lastAttackTime;
+    
+    public LayerMask obstacleLayer; // กำหนด Layer สำหรับ Tile ที่เป็นสิ่งกีดขวาง
+    public float obstacleAvoidanceRadius = 0.5f; // รัศมีตรวจจับสิ่งกีดขวาง
 
     protected override void Start()
     {
@@ -64,9 +67,22 @@ public class EnemyAI : Character
     private void FollowPlayer()
     {
         Vector2 direction = (player.transform.position - transform.position).normalized;
-
-        // No rotation logic, so we just move towards the player without rotating
-        rb.velocity = direction * moveSpeed;
+    
+        // ตรวจสอบสิ่งกีดขวางรอบตัว
+        Collider2D obstacle = Physics2D.OverlapCircle(transform.position + (Vector3)direction, obstacleAvoidanceRadius, obstacleLayer);
+    
+        if (obstacle != null)
+        {
+            Debug.Log("Obstacle detected! Adjusting path.");
+    
+            // ปรับทิศทางหลบโดยหมุน 90 องศา
+            Vector2 avoidDirection = Vector2.Perpendicular(direction);
+            rb.velocity = avoidDirection * moveSpeed;
+        }
+        else
+        {
+            rb.velocity = direction * moveSpeed;
+        }
     }
 
     private void StopMoving()
@@ -86,6 +102,20 @@ public class EnemyAI : Character
             }
         }
     }
+    
+    private void OnDrawGizmos()
+    {
+        if (player != null)
+        {
+            Gizmos.color = Color.red;
+            Vector2 direction = (player.transform.position - transform.position).normalized;
+            Gizmos.DrawLine(transform.position, transform.position + (Vector3)direction);
+    
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position + (Vector3)direction, obstacleAvoidanceRadius);
+        }
+    }
+
 
     public void SetDamage(int newDamage)
     {
