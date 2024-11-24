@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3980250059715821003}
   m_Layer: 20
   m_Name: PF Props Pillar
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

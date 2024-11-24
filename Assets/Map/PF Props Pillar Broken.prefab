@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5196717335931795554}
   m_Layer: 20
   m_Name: PF Props Pillar Broken
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
