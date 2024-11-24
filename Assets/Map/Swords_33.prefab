@@ -100,8 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordPrefab: {fileID: 4108960697505686318}
-  shotWavePrefab: {fileID: 2916980034483857899, guid: 06b324125cbf18348876a8198d252a62,
-    type: 3}
+  shotWavePrefab: {fileID: 0}
   player: {fileID: 0}
   shotWaveSpeed: 10
 --- !u!50 &-6840356083944345788
