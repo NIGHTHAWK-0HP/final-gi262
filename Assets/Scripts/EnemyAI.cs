@@ -4,7 +4,6 @@ public class EnemyAI : Character
 {
     public float moveSpeed = 3f; 
     public GameObject player;    
-    public float rotationSpeed = 5f; 
     public float attackRange = 1.5f; 
     public int attackDamage = 10;   
     public float attackCooldown = 1f; 
@@ -65,11 +64,8 @@ public class EnemyAI : Character
     private void FollowPlayer()
     {
         Vector2 direction = (player.transform.position - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
+        // No rotation logic, so we just move towards the player without rotating
         rb.velocity = direction * moveSpeed;
     }
 
@@ -97,4 +93,3 @@ public class EnemyAI : Character
         Debug.Log("Enemy damage set to: " + attackDamage);
     }
 }
-
