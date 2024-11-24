@@ -6,15 +6,17 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform spawnPoint;
     public float timeBetweenWaves = 20f;
-    public int enemiesPerWave = 5;
+    public int minEnemiesPerWave = 3;   // จำนวนศัตรูขั้นต่ำในแต่ละระลอก
+    public int maxEnemiesPerWave = 6;   // จำนวนศัตรูสูงสุดในแต่ละระลอก
     public float spawnDelay = 0.1f;
     public float spawnRadius = 2f;
 
     public int baseDamage = 10;         // ค่าความเสียหายเริ่มต้น
-    public int damageIncrement = 10;   // จำนวนที่เพิ่มขึ้นในแต่ละระลอก
+    public int damageIncrement = 10;    // จำนวนที่เพิ่มขึ้นในแต่ละระลอก
+    public int maxWaves = 10;           // จำนวนสูงสุดของระลอก
 
     private bool isSpawning = false;
-    private int currentWave = 0;       // ระบุระลอกปัจจุบัน
+    private int currentWave = 0;        // ระบุระลอกปัจจุบัน
 
     void Start()
     {
@@ -23,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        while (true)
+        while (currentWave < maxWaves)  // ตรวจสอบให้แน่ใจว่าไม่เกินจำนวนระลอกที่กำหนด
         {
             if (!isSpawning)
             {
@@ -31,7 +33,10 @@ public class EnemySpawner : MonoBehaviour
                 currentWave++;
                 Debug.Log($"Wave {currentWave} Started! Damage: {baseDamage}");
 
-                for (int i = 0; i < enemiesPerWave; i++)
+                // Randomize number of enemies per wave between min and max
+                int enemiesInThisWave = Random.Range(minEnemiesPerWave, maxEnemiesPerWave + 1);
+
+                for (int i = 0; i < enemiesInThisWave; i++)  // ใช้ค่าที่สุ่มได้จาก Random.Range
                 {
                     Vector3 spawnPosition = GetValidSpawnPosition();
                     SpawnEnemy(spawnPosition);
@@ -47,6 +52,9 @@ public class EnemySpawner : MonoBehaviour
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
+
+        Debug.Log("All waves finished!"); // เมื่อเสร็จสิ้นทุกระลอก
+        Debug.Log("You Win!");
     }
 
     Vector3 GetValidSpawnPosition()
