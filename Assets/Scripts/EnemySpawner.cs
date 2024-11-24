@@ -6,17 +6,17 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform spawnPoint;
     public float timeBetweenWaves = 20f;
-    public int minEnemiesPerWave = 3;   // จำนวนศัตรูขั้นต่ำในแต่ละระลอก
-    public int maxEnemiesPerWave = 6;   // จำนวนศัตรูสูงสุดในแต่ละระลอก
+    public int minEnemiesPerWave = 3;   // จำนวนศัตรูขั้นต่ำในแต่ละ wave
+    public int maxEnemiesPerWave = 6;   // จำนวนศัตรูสูงสุดในแต่ละ wave
     public float spawnDelay = 0.1f;
     public float spawnRadius = 2f;
 
     public int baseDamage = 10;         // ค่าความเสียหายเริ่มต้น
-    public int damageIncrement = 10;    // จำนวนที่เพิ่มขึ้นในแต่ละระลอก
-    public int maxWaves = 10;           // จำนวนสูงสุดของระลอก
+    public int damageIncrement = 10;    // จำนวนที่เพิ่มขึ้นในแต่ wave
+    public int maxWaves = 10;           // จำนวนสูงสุดของ wave
 
     private bool isSpawning = false;
-    private int currentWave = 0;        // ระบุระลอกปัจจุบัน
+    private int currentWave = 0;     
 
     void Start()
     {
@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        while (currentWave < maxWaves)  // ตรวจสอบให้แน่ใจว่าไม่เกินจำนวนระลอกที่กำหนด
+        while (currentWave < maxWaves)
         {
             if (!isSpawning)
             {
@@ -46,14 +46,14 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log($"Wave {currentWave} Finished!");
                 isSpawning = false;
 
-                // เพิ่มความเสียหายสำหรับระลอกถัดไป
+                // เพิ่มความเสียหายสำหรับ next wave
                 baseDamage += damageIncrement;
 
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
         }
 
-        Debug.Log("All waves finished!"); // เมื่อเสร็จสิ้นทุกระลอก
+        Debug.Log("All waves finished!");
     }
 
     Vector3 GetValidSpawnPosition()

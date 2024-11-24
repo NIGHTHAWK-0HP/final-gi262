@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1946507535420929476}
   - component: {fileID: 450669899228472938}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TX Tileset Grass Flower 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}

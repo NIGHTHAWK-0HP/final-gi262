@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9154191411620213535}
   - component: {fileID: 479445777510262979}
   - component: {fileID: 7534505178359933383}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TX Bush T2
   m_TagString: Tile
   m_Icon: {fileID: 0}

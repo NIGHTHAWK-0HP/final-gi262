@@ -188,6 +188,8 @@ MonoBehaviour:
   attackRange: 1.5
   attackDamage: 10
   attackCooldown: 1
+  interceptTime: 1
+  raycastDistance: 1
 --- !u!1 &8867989618235733810
 GameObject:
   m_ObjectHideFlags: 0

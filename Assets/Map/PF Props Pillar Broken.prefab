@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7417826508731786056}
   - component: {fileID: 3200263296452165644}
-  m_Layer: 20
+  m_Layer: 6
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2597990741188013009}
   - component: {fileID: 3397154422618617050}
   - component: {fileID: 5196717335931795554}
-  m_Layer: 20
+  m_Layer: 6
   m_Name: PF Props Pillar Broken
   m_TagString: Tile
   m_Icon: {fileID: 0}
