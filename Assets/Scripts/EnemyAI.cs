@@ -13,8 +13,9 @@ public class EnemyAI : Character
     private Character playerCharacterScript;
     private float lastAttackTime;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
