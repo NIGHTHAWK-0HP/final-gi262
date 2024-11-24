@@ -21,6 +21,7 @@ public class WaveLifetime : MonoBehaviour
             {
                 enemy.TakeDamage(damage);  // ทำความเสียหายให้กับศัตรู
                 Debug.Log("Wave hits the enemy for " + damage + " damage.");
+                Destroy(gameObject);
             }
         }
     }
