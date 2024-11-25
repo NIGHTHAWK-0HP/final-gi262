@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WaveLifetime : MonoBehaviour
+public class BulletLifetime : MonoBehaviour
 {
     public float lifetime = 0.25f;  // เวลาที่คลื่นจะอยู่ในโลก (ในวินาที)
     public int damage = 20;        // ความเสียหายที่คลื่นจะทำกับศัตรู
