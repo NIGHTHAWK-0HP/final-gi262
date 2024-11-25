@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public int damageIncrement = 5;    // จำนวนที่เพิ่มขึ้นในแต่ wave
     public int baseHealth = 100;         // ค่าพลังชีวิตเริ่มต้น
     public int healthIncrement = 20;    // จำนวนที่เพิ่มขึ้นในแต่ wave
-    public int maxWaves = 10;           // จำนวนสูงสุดของ wave
+    public int maxWaves = 3;           // จำนวนสูงสุดของ wave
 
     private bool isSpawning = false;
     private int currentWave = 0;     
