@@ -14,6 +14,10 @@ public class EnemyAI : Character
     
     public LayerMask obstacleLayer; // กำหนด Layer สำหรับ Tile ที่เป็นสิ่งกีดขวาง
     public float obstacleAvoidanceRadius = 0.5f; // รัศมีตรวจจับสิ่งกีดขวาง
+    
+    private Vector2 lastPosition;
+    private float stuckTimer = 0f;
+    private float stuckThreshold = 2f; // เวลาที่ถือว่าติด
 
     protected override void Start()
     {
@@ -114,6 +118,26 @@ public class EnemyAI : Character
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position + (Vector3)direction, obstacleAvoidanceRadius);
         }
+    }
+    
+    private void CheckStuck()
+    {
+        if (Vector2.Distance(transform.position, lastPosition) < 0.1f)
+        {
+            stuckTimer += Time.deltaTime;
+            if (stuckTimer >= stuckThreshold)
+            {
+                Debug.Log("Enemy stuck! Adjusting...");
+                Vector2 randomDirection = Random.insideUnitCircle.normalized;
+                rb.velocity = randomDirection * moveSpeed;
+                stuckTimer = 0f;
+            }
+        }
+        else
+        {
+            stuckTimer = 0f;
+        }
+        lastPosition = transform.position;
     }
 
 
