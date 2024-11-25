@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class WaveLifetime : MonoBehaviour
 {
-    public float lifetime = 0.5f;  // เวลาที่คลื่นจะอยู่ในโลก (ในวินาที)
-    public int damage = 10;        // ความเสียหายที่คลื่นจะทำกับศัตรู
+    public float lifetime = 0.25f;  // เวลาที่คลื่นจะอยู่ในโลก (ในวินาที)
+    public int damage = 20;        // ความเสียหายที่คลื่นจะทำกับศัตรู
 
     void Start()
     {

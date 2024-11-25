@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyAI : Character
 {
-    public float moveSpeed = 3f; 
+    public float moveSpeed = 3f;
     public GameObject player;    
     public float attackRange = 1.5f; 
     public int attackDamage = 10;   
-    public float attackCooldown = 1f; 
+    public float attackCooldown = 1f;
 
     private Rigidbody2D rb;
     private Character playerCharacterScript;
@@ -16,7 +16,7 @@ public class EnemyAI : Character
     public float obstacleAvoidanceRadius = 0.5f; // รัศมีตรวจจับสิ่งกีดขวาง
     
     private Vector2 lastPosition;
-    private float stuckTimer = 0f;
+    private float stuckTimer = 1f;
     private float stuckThreshold = 2f; // เวลาที่ถือว่าติด
 
     protected override void Start()
@@ -66,6 +66,8 @@ public class EnemyAI : Character
                 }
             }
         }
+
+        CheckStuck();  // Call the stuck detection
     }
 
     private void FollowPlayer()
@@ -140,10 +142,17 @@ public class EnemyAI : Character
         lastPosition = transform.position;
     }
 
-
     public void SetDamage(int newDamage)
     {
         attackDamage = newDamage;
         Debug.Log("Enemy damage set to: " + attackDamage);
+    }
+
+    // เพิ่มฟังก์ชัน SetHealth สำหรับการตั้งค่าพลังชีวิตของศัตรู
+    public void SetHealth(int newHealth)
+    {
+        maxHealth = newHealth;
+        health = newHealth;  // ตั้งค่าพลังชีวิตปัจจุบันให้เป็นค่าพลังชีวิตสูงสุด
+        Debug.Log("Enemy health set to: " + health);
     }
 }

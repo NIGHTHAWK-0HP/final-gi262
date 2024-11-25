@@ -12,7 +12,9 @@ public class EnemySpawner : MonoBehaviour
     public float spawnRadius = 2f;
 
     public int baseDamage = 10;         // ค่าความเสียหายเริ่มต้น
-    public int damageIncrement = 10;    // จำนวนที่เพิ่มขึ้นในแต่ wave
+    public int damageIncrement = 5;    // จำนวนที่เพิ่มขึ้นในแต่ wave
+    public int baseHealth = 100;         // ค่าพลังชีวิตเริ่มต้น
+    public int healthIncrement = 20;    // จำนวนที่เพิ่มขึ้นในแต่ wave
     public int maxWaves = 10;           // จำนวนสูงสุดของ wave
 
     private bool isSpawning = false;
@@ -31,7 +33,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 isSpawning = true;
                 currentWave++;
-                Debug.Log($"Wave {currentWave} Started! Damage: {baseDamage}");
+                Debug.Log($"Wave {currentWave} Started! Damage: {baseDamage}, Health: {baseHealth}");
 
                 // Randomize number of enemies per wave between min and max
                 int enemiesInThisWave = Random.Range(minEnemiesPerWave, maxEnemiesPerWave + 1);
@@ -46,8 +48,9 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log($"Wave {currentWave} Finished!");
                 isSpawning = false;
 
-                // เพิ่มความเสียหายสำหรับ next wave
+                // เพิ่มความเสียหายและพลังชีวิตสำหรับ next wave
                 baseDamage += damageIncrement;
+                baseHealth += healthIncrement;
 
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
@@ -74,11 +77,12 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-        // ส่งค่าความเสียหายให้กับ EnemyAI
+        // ส่งค่าความเสียหายและพลังชีวิตให้กับ EnemyAI
         EnemyAI enemyScript = enemy.GetComponent<EnemyAI>();
         if (enemyScript != null)
         {
             enemyScript.SetDamage(baseDamage);
+            enemyScript.SetHealth(baseHealth);
         }
     }
 }
