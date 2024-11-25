@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
@@ -18,7 +19,17 @@ public class Character : MonoBehaviour
     // สามารถ override เพื่อเปลี่ยนพฤติกรรมหลังจากตายได้
     protected virtual void OnCharacterDied()
     {
-        Destroy(gameObject); // ทำลายวัตถุ
+        // ตรวจสอบว่าอ็อบเจ็กต์ที่ถูกทำลายคือลักษณะของเพลย์เยอร์
+        if (gameObject.CompareTag("Player"))
+        {
+            // เปลี่ยนฉากไปยัง "GameOver" เมื่อเพลย์เยอร์ตาย
+            SceneManager.LoadScene("GameOver");  // เปลี่ยนชื่อฉากเป็นที่คุณต้องการ
+        }
+        else
+        {
+            // สำหรับตัวละครอื่นๆ สามารถเพิ่มการทำงานได้ที่นี่
+            Destroy(gameObject);  // ทำลายอ็อบเจ็กต์สำหรับตัวละครที่ไม่ใช่เพลย์เยอร์
+        }
     }
 
     // รับความเสียหาย
@@ -49,8 +60,6 @@ public class Character : MonoBehaviour
 
         Debug.Log($"{gameObject.name} healed {amount}. Health: {currentHealth}");
     }
-
-    // ใช้ public หรือ protected แทน private เพื่อให้คลาสลูกสามารถเข้าถึงได้
     protected virtual void Start()
     {
         currentHealth = maxHealth;  // เริ่มต้นค่าพลังชีวิต
