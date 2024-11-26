@@ -81,7 +81,7 @@ public class EnemyAI : Character
         {
             Debug.Log("Obstacle detected! Adjusting path.");
     
-            // ปรับทิศทางหลบโดยหมุน 90 องศา
+            // ปรับทิศทางหลบโดยหมุนองศา
             Vector2 avoidDirection = Vector2.Perpendicular(direction);
             rb.velocity = avoidDirection * moveSpeed;
         }
